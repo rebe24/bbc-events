@@ -1,0 +1,73 @@
+<?php
+/**
+ * @file
+ * Custom functionality for bbc events database.
+ */
+ 
+ 
+/**
+ * Implements hook_help().
+ */
+function bbcevents_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#bbcevents':{
+      $ret_val = '<h3>' . t('About') . '</h3>';
+      $ret_val .= '<p>' . t('The bbc events module makes it easy to manage a database of events.') . '</p>';
+      return $ret_val;
+      break;
+    }
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bbcevents_permission() {
+  return array(
+    'administer bbc events' => array(
+      'title' => t('Administer BBC Events'),
+      'description' => t('Perform administrative tasks on BBC Events functionality'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function bbcevents_menu() {
+  $items = array();
+  
+  // Admin configuration group.
+  $items['admin/config/bbcevents'] = array(
+    'title' => 'Beat Blood Cancer Events',
+    'description' => 'Administer BBC Events',
+    'access arguments' => array('administer bbc events'),
+  );
+  
+  // Admin configuration - Settings.
+  $items['admin/config/bbcevents/manage'] = array(
+    'title' => 'BBC Events settings',
+    'description' => 'Manage BBC Events settings and configurations.',
+    'access arguments' => array('administer bbc events'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bbcevents_admin_settings_form'),
+  );
+  
+  return $items;
+}
+/**
+ * Implements hook_form().
+ */
+ function bbcevents_admin_settings_form($node, &$form_state) {
+ 	$form = array();
+ 	
+ 	$form['overview'] = array(
+    '#markup' => t('This interface allows administrators to manage general BBC Events Settings'),
+    '#prefix' => '<p><b>',
+    '#suffix' => '</p></b>',
+  );
+  
+   return system_settings_form($form);
+ 	
+ }
+ 
